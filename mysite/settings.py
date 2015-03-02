@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mojblog',
+    'users',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,6 +99,8 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+from .secrets import *
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
