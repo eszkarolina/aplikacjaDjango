@@ -1,48 +1,62 @@
+
 {% extends 'blog/base.html' %}
-
 {% block content %}
+
     <div class="date">
-   {% if post.published_date %}
+    {% if post.published_date %}
     {{ post.published_date }}
-	{% else %}
+
+    autor: {{post.author}}
+    kategoria: {{post.category}}
+    {% else %}
     <a class="btn btn-default" href="{% url 'mojblog.views.post_publish' pk=post.pk %}">Publish</a>
-
-	{% endif %}
-	   {% if user.is_authenticated %} 
-       <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-       <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-         {% endif %}
-
+    {% endif %}
+    {% if user.is_authenticated %}
+    <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    {% endif %}
     </div>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.text|linebreaks }}</p>
-
-        {% if post.comment_set.all %} 
-     <h3>Comments</h3> 
-     <div class="comments"> 
-       {% for comment in post.comment_set.all %} 
-             <span> 
-                 <a href="{{ comment.website }}">{{ comment.name }}</a> said on {{ comment.created_on }} 
-             </span> 
-             <p> 
-                 {{ comment.text }} 
-             </p> 
-        {% endfor %} 
-    </div> 
-     {% endif %} 
-
-    <br /> 
-
-    <h4>Add Comment</h4>
-
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit" name="submit" value="Submit" />
-    </form>
+<h1>{{ post.title }} </h1>
+<!-- <h2>{{post.category}}</h2> -->
+<p>{{ post.text|linebreaks }}</p>
+{% if post.comment_set.all %}
 
 
+<h3>Komentarze</h3>
+    <div class="comments">
+    {% for comment in post.comment_set.all %}
+    <span>
+    <a href="{{ comment.website }}">{{ comment.name }}</a> said on {{ comment.created_on }} by {{comment.author}}
+    </span>
+   
+  
+    <p>
+    {{ comment.text }}
+    </p>
+    {% endfor %}
+    
+    </div>
+{% endif %}
 
+<br />
+
+<h4>Dodaj swój komentarz:</h4>
+
+<form action="{% url 'comment_add' pk=post.pk %}" method="POST">
+{% csrf_token %}
+{{form.non_filed_errors}}
+<div class="form-group">
+    {{form.text.errors}}
+    {#form.text.label_tag #}
+    <div>
+        {{form.text}}
+    </div>
+</div>
+<div class="form-group">
+    <div>
+        <button type="submit" class="btn btn-default">Opublikuj</button>
+    </div>
+
+</div>
+</form>
 {% endblock %}

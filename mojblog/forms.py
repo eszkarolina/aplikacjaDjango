@@ -1,14 +1,21 @@
 from django import forms
 
-from .models import Post, Comment
+from .models import Post, Comment, Category
 
 class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'text',)
+        # category=forms.ModelChoiceField(Category.objects.all())
+        fields = ('title', 'category', 'text',)
 
 class CommentForm(forms.ModelForm):
 	class Meta:
 		model = Comment
-		exclude = ('post',)    
+		# exclude = ('Post', )
+		fields = ('text', )
+
+class CategoryForm(forms.ModelForm):
+	class Meta:
+		fields = ('category', )
+	

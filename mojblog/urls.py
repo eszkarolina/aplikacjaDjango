@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/', include(admin.site.urls)),
+    # url(r'^post/(?P<pk>[0-9]+)/editcomment$', views.comment_remove, name='comment_edit'),
+    url(r'^post/(?P<pk>[0-9]+)/addcomment$', views.comment_add, name='comment_add'),
+    url(r'^search/$', views.search, name='search'),
    
 
 )

@@ -1,0 +1,21 @@
+
+
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>Wyniki wyszukiwania:</h1>
+{% if posts %}
+  <ul>
+    {% for post in posts %}
+        <div class="post">
+          
+            <li><a href="{% url 'mojblog.views.post_detail' pk=post.pk %}">{{ post.title }}</a></li>
+
+            <p>{{ post.text|truncatechars:200 }}</p>
+        </div>
+    {% endfor %}
+  </ul>
+{% else %}
+    <p>No posts matched your search criteria.</p>
+{% endif %}
+{% endblock %}
